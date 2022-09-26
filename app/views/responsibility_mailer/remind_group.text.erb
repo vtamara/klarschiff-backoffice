@@ -2,7 +2,8 @@
 
 <%= t('.message', days: @days) %>
 
-<%= Issue.human_attribute_name(:id) %><%= "\t" %><%= Issue.human_attribute_name(:group) %><%= "\t" %><%= t'attributes.kind' %><%= "\t" %><%= t'.assigned_since' %>
+<%= Issue.human_attribute_name(:id) %><%= "\t" %><%= Issue.human_attribute_name(:group) -%>
+<%= "\t" %><%= t 'attributes.kind' %><%= "\t" %><%= t '.assigned_since' %>
 ******<%= "\t" %>*************<%= "\t" %>***<%= "\t" %>***************
 <% @issues.each do |issue| -%>
 <%= [issue.id, MainCategory.human_enum_name(:kind, issue.kind),
