@@ -498,6 +498,7 @@ de:
       assign_jobs: Zuordnung für Außendienst
       map: Kartenansicht
       new_issue: Neue Meldung
+      rss: RSS
     edit:
       confirm_send_email_again: Soll die E-Mail wirklich erneut versendet werden?
       send_as_email: Daten der Meldung als E-Mail versenden
@@ -561,6 +562,12 @@ de:
       undo: zurück
     tab_rejection:
       reject: zurückweisen
+  issues_rss:
+    index:
+      feed_description: "Diese Daten umfassen alle Ihre Meldungen in %{name}."
+      link: "Meldung in %{name} ansehen"
+      no_supporters: bisher keine
+      status_note_not_available: nicht vorhanden
   jobs:
     title: Außendienstaufträge
     grouped_jobs:
@@ -621,8 +628,11 @@ de:
     description:
       internal: redaktionelle Prüfung ausstehend
       default_group: >
-        Die Meldung wurde in einem Amtsgebiet angelegt, das noch nicht an Klarschiff-MV teilnimmt.
-        Die Daten der Meldung wurden an das zuständige Amt weitergeleitet.
+        Die Daten der Meldung wurden an die zuständige Verwaltung weitergeleitet und werden dort (noch) außerhalb von Klarschiff-MV bearbeitet.
+        Deshalb können die Meldungsdetails nicht vollständig im Portal angezeigt werden.
+      default_group_countygroup: >
+        Die Meldung betrifft ein Thema, für das die regionale Verwaltung nicht zuständig ist.
+        Sie wurde zu einer übergeordneten Verwaltung weitergeleitet, die noch nicht aktiv an Klarschiff teilnimmt, aber über die Meldung informiert wurde.
         Die Meldungsdetails werden nicht vollständig im Portal angezeigt.
   salutation_editor: "Sehr geehrte(r) Bearbeiter/-in von Meldungen in %{name},"
   salutation_universal: Sehr geehrte Damen und Herren,

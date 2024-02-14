@@ -16,12 +16,13 @@ module Citysdk
     end
 
     def filter_collection(params)
+      default_filter_categories(params)
       default_filter_abuse_reports(params)
       default_filter_status(params)
       default_filter_area(params)
 
       params.each do |key, value|
-        send("filter_#{key}", params) if respond_to?("filter_#{key}", true) && value.present?
+        send(:"filter_#{key}", params) if respond_to?(:"filter_#{key}", true) && value.present?
       end
       @collection = @collection.not_status_deleted
       @collection = @collection.not_archived if params[:also_archived].blank? || params[:also_archived] == 'false'
@@ -31,6 +32,10 @@ module Citysdk
     def limit_requests(params)
       return @collection if params[:max_requests].blank?
       @collection = @collection.limit(params[:max_requests].to_i)
+    end
+
+    def default_filter_categories(_params)
+      @collection = @collection.where(main_category: { deleted: false }).where(sub_category: { deleted: false })
     end
 
     def default_filter_abuse_reports(_params)
@@ -46,7 +51,7 @@ module Citysdk
     def default_filter_area(params)
       return if (lat = params[:lat]).blank? || (long = params[:long]).blank? || (radius = params[:radius]).blank?
       @collection = @collection.where(<<~SQL.squish, lat:, long:, radius: radius.to_f / 100_000)
-        (#{Issue.quoted_table_name}."position" &&
+        ST_Within(#{Issue.quoted_table_name}."position",
           ST_Buffer(ST_SetSRID(ST_MakePoint(:lat, :long), 4326), :radius))
       SQL
     end
@@ -99,14 +104,14 @@ module Citysdk
       return @collection = @collection.none unless obs
       @collection = @collection.where(category_id: obs.category_ids.split(',').map(&:to_i))
       @collection = @collection.where(<<~SQL.squish)
-        (#{Issue.quoted_table_name}."position" &&
+        ST_Within(#{Issue.quoted_table_name}."position",
           (#{Observation.where(key: params[:observation_key]).select(:area).to_sql}))
       SQL
     end
 
     def filter_area_code(params)
       @collection = @collection.where(<<~SQL.squish)
-        (#{Issue.quoted_table_name}."position" &&
+        ST_Within(#{Issue.quoted_table_name}."position",
           (#{Settings.area_level.where(id: params[:area_code].to_i).select(:area).to_sql}))
       SQL
     end

@@ -1,9 +1,17 @@
 name: Rails Tests
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - master
+      - 'dependabot/**'
+  workflow_call:
+
+env:
+  RAILS_ENV: test
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -15,9 +23,13 @@ jobs:
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+      - run: yarn install
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -30,8 +42,10 @@ jobs:
           cp config/secrets.sample.yml config/secrets.yml
           rm config/storage.yml
           cp config/storage.sample.yml config/storage.yml
-      - name: Prepare Assets Libs
-        run: bundle exec rails assets:libs
+      - name: Prepare Database
+        run: bundle exec rails db:drop db:create db:schema:load
+      - name: Prepare Assets
+        run: bundle exec rails assets:precompile
       - name: Run Rails Tests
         run: bundle exec rails test -b -d
 

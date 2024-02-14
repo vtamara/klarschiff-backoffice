@@ -3,14 +3,14 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.1.2'
+ruby '~> 3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0'
+gem 'rails', '~> 7.1.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.2'
 # Use Puma as the app server
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 6.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
@@ -42,6 +42,7 @@ group :development do
   gem 'brakeman'
   gem 'bullet'
   gem 'pronto-rubocop', require: false
+  gem 'rubocop-capybara'
   gem 'rubocop-minitest', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
@@ -63,12 +64,9 @@ gem 'coffee-rails'
 gem 'exception_notification'
 gem 'font-awesome-rails'
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', github: 'jquery-ui-rails/jquery-ui-rails', tag: 'v7.0.0'
 gem 'kaminari'
-gem 'net-imap', require: false # drop after gem mail >= v2.8.0
 gem 'net-ldap'
-gem 'net-pop', require: false # drop after gem mail >= v2.8.0
-gem 'net-smtp', require: false # drop after gem mail >= v2.8.0
 gem 'pdfkit'
 gem 'rails-i18n'
 gem 'rubyXL'
